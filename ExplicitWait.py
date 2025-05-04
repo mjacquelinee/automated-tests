@@ -1,0 +1,33 @@
+import unittest
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions  as EC
+# Importa Keys para simular la pulsación de teclas (como ENTER)
+from selenium.webdriver.common.keys import Keys
+# Importa Service para inicializar el servicio del ChromeDriver
+from selenium.webdriver.chrome.service import Service
+# Importa ChromeDriverManager para gestionar automáticamente la descarga y selección del ChromeDriver
+from webdriver_manager.chrome import ChromeDriverManager
+
+
+# Define una clase de prueba que hereda de unittest.TestCase
+class PaginaSigiente(unittest.TestCase):
+
+    # Método que se ejecuta antes de cada test (preparación)
+    def setUp(self):
+        # Inicializa el navegador Chrome usando ChromeDriverManager para el driver correcto automáticamente
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+
+    def test_usando_explicit_wait(self):
+        driver = self.driver
+        driver.get("https://opensource-demo.orangehrmlive.com/web/index.php/auth/login")
+        try:
+            element = WebDriverWait(driver,10).until(
+            EC.presence_of_element_located((By.NAME, "username"))
+            )
+        finally:
+            driver.quit()
+
+if __name__ == '__main__':
+    unittest.main()
